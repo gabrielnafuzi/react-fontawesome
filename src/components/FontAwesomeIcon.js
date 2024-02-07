@@ -7,39 +7,59 @@ import objectWithKey from '../utils/object-with-key'
 import PropTypes from 'prop-types'
 import React from 'react'
 
-const FontAwesomeIcon = React.forwardRef((props, ref) => {
-  const {
-    icon: iconArgs,
-    mask: maskArgs,
-    symbol,
-    className,
-    title,
-    titleId,
-    maskId
-  } = props
+const defaultProps = {
+  border: false,
+  className: '',
+  mask: null,
+  maskId: null,
+  fixedWidth: false,
+  inverse: false,
+  flip: false,
+  icon: null,
+  listItem: false,
+  pull: null,
+  pulse: false,
+  rotation: null,
+  size: null,
+  spin: false,
+  spinPulse: false,
+  spinReverse: false,
+  beat: false,
+  fade: false,
+  beatFade: false,
+  bounce: false,
+  shake: false,
+  symbol: false,
+  title: '',
+  titleId: null,
+  transform: null,
+  swapOpacity: false
+}
 
-  const iconLookup = normalizeIconArgs(iconArgs)
+const FontAwesomeIcon = React.forwardRef((props, ref) => {
+  const normalizedProps = { ...defaultProps, ...props }
+  const iconLookup = normalizeIconArgs(normalizedProps.icon)
 
   const classes = objectWithKey('classes', [
-    ...classList(props),
-    ...className.split(' ')
+    ...classList(normalizedProps),
+    ...normalizedProps.className.split(' ')
   ])
   const transform = objectWithKey(
     'transform',
-    typeof props.transform === 'string'
-      ? parse.transform(props.transform)
-      : props.transform
+    typeof normalizedProps.transform === 'string'
+      ? parse.transform(normalizedProps.transform)
+      : normalizedProps.transform
   )
-  const mask = objectWithKey('mask', normalizeIconArgs(maskArgs))
+  const mask = objectWithKey('mask', normalizeIconArgs(normalizedProps.mask))
 
   const renderedIcon = icon(iconLookup, {
     ...classes,
     ...transform,
     ...mask,
-    symbol,
-    title,
-    titleId,
-    maskId
+    symbol: normalizedProps.symbol,
+    title: normalizedProps.title,
+    titleId: normalizedProps.titleId,
+    maskId: normalizedProps.maskId
   })
 
   if (!renderedIcon) {
@@ -50,10 +70,10 @@ const FontAwesomeIcon = React.forwardRef((props, ref) => {
   const { abstract } = renderedIcon
   const extraProps = { ref }
 
-  Object.keys(props).forEach(key => {
+  Object.keys(normalizedProps).forEach((key) => {
     // eslint-disable-next-line no-prototype-builtins
-    if (!FontAwesomeIcon.defaultProps.hasOwnProperty(key)) {
-      extraProps[key] = props[key]
+    if (!defaultProps.hasOwnProperty(key)) {
+      extraProps[key] = normalizedProps[key]
     }
   })
 
@@ -141,35 +161,6 @@ FontAwesomeIcon.propTypes = {
   transform: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 
   swapOpacity: PropTypes.bool
-}
-
-FontAwesomeIcon.defaultProps = {
-  border: false,
-  className: '',
-  mask: null,
-  maskId: null,
-  fixedWidth: false,
-  inverse: false,
-  flip: false,
-  icon: null,
-  listItem: false,
-  pull: null,
-  pulse: false,
-  rotation: null,
-  size: null,
-  spin: false,
-  spinPulse: false,
-  spinReverse: false,
-  beat: false,
-  fade: false,
-  beatFade: false,
-  bounce: false,
-  shake: false,
-  symbol: false,
-  title: '',
-  titleId: null,
-  transform: null,
-  swapOpacity: false
 }
 
 export default FontAwesomeIcon

@@ -336,23 +336,46 @@
     return Array.isArray(value) && value.length > 0 || !Array.isArray(value) && value ? _defineProperty({}, key, value) : {};
   }
 
+  var defaultProps = {
+    border: false,
+    className: '',
+    mask: null,
+    maskId: null,
+    fixedWidth: false,
+    inverse: false,
+    flip: false,
+    icon: null,
+    listItem: false,
+    pull: null,
+    pulse: false,
+    rotation: null,
+    size: null,
+    spin: false,
+    spinPulse: false,
+    spinReverse: false,
+    beat: false,
+    fade: false,
+    beatFade: false,
+    bounce: false,
+    shake: false,
+    symbol: false,
+    title: '',
+    titleId: null,
+    transform: null,
+    swapOpacity: false
+  };
   var FontAwesomeIcon = /*#__PURE__*/React__default["default"].forwardRef(function (props, ref) {
-    var iconArgs = props.icon,
-        maskArgs = props.mask,
-        symbol = props.symbol,
-        className = props.className,
-        title = props.title,
-        titleId = props.titleId,
-        maskId = props.maskId;
-    var iconLookup = normalizeIconArgs(iconArgs);
-    var classes = objectWithKey('classes', [].concat(_toConsumableArray(classList(props)), _toConsumableArray(className.split(' '))));
-    var transform = objectWithKey('transform', typeof props.transform === 'string' ? fontawesomeSvgCore.parse.transform(props.transform) : props.transform);
-    var mask = objectWithKey('mask', normalizeIconArgs(maskArgs));
+    var normalizedProps = _objectSpread2(_objectSpread2({}, defaultProps), props);
+
+    var iconLookup = normalizeIconArgs(normalizedProps.icon);
+    var classes = objectWithKey('classes', [].concat(_toConsumableArray(classList(normalizedProps)), _toConsumableArray(normalizedProps.className.split(' '))));
+    var transform = objectWithKey('transform', typeof normalizedProps.transform === 'string' ? fontawesomeSvgCore.parse.transform(normalizedProps.transform) : normalizedProps.transform);
+    var mask = objectWithKey('mask', normalizeIconArgs(normalizedProps.mask));
     var renderedIcon = fontawesomeSvgCore.icon(iconLookup, _objectSpread2(_objectSpread2(_objectSpread2(_objectSpread2({}, classes), transform), mask), {}, {
-      symbol: symbol,
-      title: title,
-      titleId: titleId,
-      maskId: maskId
+      symbol: normalizedProps.symbol,
+      title: normalizedProps.title,
+      titleId: normalizedProps.titleId,
+      maskId: normalizedProps.maskId
     }));
 
     if (!renderedIcon) {
@@ -364,10 +387,10 @@
     var extraProps = {
       ref: ref
     };
-    Object.keys(props).forEach(function (key) {
+    Object.keys(normalizedProps).forEach(function (key) {
       // eslint-disable-next-line no-prototype-builtins
-      if (!FontAwesomeIcon.defaultProps.hasOwnProperty(key)) {
-        extraProps[key] = props[key];
+      if (!defaultProps.hasOwnProperty(key)) {
+        extraProps[key] = normalizedProps[key];
       }
     });
     return convertCurry(abstract[0], extraProps);
@@ -401,34 +424,6 @@
     titleId: PropTypes__default["default"].string,
     transform: PropTypes__default["default"].oneOfType([PropTypes__default["default"].string, PropTypes__default["default"].object]),
     swapOpacity: PropTypes__default["default"].bool
-  };
-  FontAwesomeIcon.defaultProps = {
-    border: false,
-    className: '',
-    mask: null,
-    maskId: null,
-    fixedWidth: false,
-    inverse: false,
-    flip: false,
-    icon: null,
-    listItem: false,
-    pull: null,
-    pulse: false,
-    rotation: null,
-    size: null,
-    spin: false,
-    spinPulse: false,
-    spinReverse: false,
-    beat: false,
-    fade: false,
-    beatFade: false,
-    bounce: false,
-    shake: false,
-    symbol: false,
-    title: '',
-    titleId: null,
-    transform: null,
-    swapOpacity: false
   };
   var convertCurry = convert.bind(null, React__default["default"].createElement);
 
